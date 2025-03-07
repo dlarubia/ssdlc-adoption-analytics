@@ -77,6 +77,7 @@ const svg = Plot.plot({
     color: {
         legend: true,
         fontSize: 40,
+        scheme: "Turbo",
     },
 })
 
