@@ -1,6 +1,40 @@
 <!DOCTYPE html>
-<body bgcolor="white">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vulnerabilities by Date</title>
+    <style>
+        :root {
+            --bg-color: #1a1a1a;
+            --text-color: #ffffff;
+            --grid-color: #333333;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+        
+        #myplot {
+            width: 100%;
+            height: 100vh;
+        }
+        
+        /* Style for the plot elements */
+        #myplot svg {
+            background-color: var(--bg-color);
+        }
+        
+        #myplot text {
+            fill: var(--text-color);
+        }
+    </style>
+</head>
+<body>
     <div id="myplot"></div>
-    <script type="module" src="/src/graphs/new_vulnerabilities_by_date/stackedBar.js">
-    </script>
+    <script type="module" src="./src/graphs/new_vulnerabilities_by_date/stackedBar.js"></script>
 </body>
+</html>
