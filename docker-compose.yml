@@ -1,0 +1,47 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: cybermetrics-db
+    environment:
+      POSTGRES_DB: cybermetrics
+      POSTGRES_USER: cybermetrics
+      POSTGRES_PASSWORD: cybermetrics
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./sql/001_schema.sql:/docker-entrypoint-initdb.d/001_schema.sql:ro
+      - ./sql/002_seed_dimensions.sql:/docker-entrypoint-initdb.d/002_seed_dimensions.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cybermetrics"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    networks:
+      - cybermetrics
+
+  grafana:
+    image: grafana/grafana-oss:latest
+    container_name: cybermetrics-grafana
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: admin
+      GF_USERS_ALLOW_SIGN_UP: "false"
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - cybermetrics
+
+volumes:
+  pgdata:
+  grafana_data:
+
+networks:
+  cybermetrics:
+    driver: bridge
